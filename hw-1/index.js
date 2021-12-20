@@ -1,5 +1,6 @@
 let cardNumberDOM = document.getElementById("cardNumber");
 let errorMessageDOM = document.getElementById("errorMessage");
+let cardTitleDOM = document.getElementById("cardTitle");
 
 // Kullanıcı tarafından girilen kart numarası alınır.
 cardNumberDOM.addEventListener("change", (event) => {
@@ -26,12 +27,15 @@ const checkForTwoDifferentDigits = (cardNumberArray) => {
     }
   }
 
-  count >= 1 ? console.log("geçerli") : console.log("geçersiz");
+  count >= 1
+    ? (cardTitleDOM.innerHTML = "VALID")
+    : (cardTitleDOM.innerHTML = "INVALID");
 };
 
 // Kart numarasının son iki hanesi çift olup olmadığı kontrol edilir.
 const lastTwoDigitCheck = (cardNumberArray) => {
   errorMessage("");
+  resultMessage("");
   const cardLength = cardNumberArray.length;
   const lastTwoDigitSum =
     cardNumberArray[cardLength - 2] * 10 + cardNumberArray[cardLength - 1] * 1;
@@ -44,6 +48,7 @@ const lastTwoDigitCheck = (cardNumberArray) => {
 // Kart numarasının toplamı 16'dan büyük olup olmadığı kontrol edilir.
 const sumCheck = (cardNumberArray) => {
   errorMessage("");
+  resultMessage("");
   let sum = cardNumberArray.reduce((a, b) => {
     return a + b;
   }, 0);
@@ -55,6 +60,7 @@ const sumCheck = (cardNumberArray) => {
 // Kart numarısının uzunluğu kontrol edilir.
 const lengthCheck = (cardNumberArray) => {
   errorMessage("");
+  resultMessage("");
   let isSixteenDigit =
     cardNumberArray.length === 16
       ? true
@@ -66,6 +72,7 @@ const lengthCheck = (cardNumberArray) => {
 // Kart numarası integer'a dönüştürülür.
 const convertToNumber = (cardNumberArray) => {
   errorMessage("");
+  resultMessage("");
   let tempCardNumberArray = [];
   for (let num of cardNumberArray) {
     if (num !== "-") tempCardNumberArray.push(parseInt(num));
@@ -76,6 +83,7 @@ const convertToNumber = (cardNumberArray) => {
 // Kart numarasının tamamının rakamlardan veya orta çizgiden oluşup oluşmadığı kontrol edilir.
 const numberDigitCheck = (cardNumberArray) => {
   errorMessage("");
+  resultMessage("");
   let tempCardNumberArray = cardNumberArray.every((num) => {
     return (num >= 0 && num <= 9) || num === "-";
   });
@@ -87,4 +95,8 @@ const numberDigitCheck = (cardNumberArray) => {
 
 const errorMessage = (message) => {
   errorMessageDOM.innerText = message;
+};
+
+const resultMessage = (message) => {
+  cardTitleDOM.innerText = message;
 };

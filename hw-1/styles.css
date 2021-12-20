@@ -25,14 +25,42 @@ body {
 
 .card-title-container {
   background-color: #ecb365;
+  opacity: 0.8;
+  background: radial-gradient(
+      circle,
+      transparent 20%,
+      #ecb365 20%,
+      #ecb365 80%,
+      transparent 80%,
+      transparent
+    ),
+    radial-gradient(
+        circle,
+        transparent 20%,
+        #ecb365 20%,
+        #ecb365 80%,
+        transparent 80%,
+        transparent
+      )
+      10px 10px,
+    linear-gradient(#041c32 0.8px, transparent 0.8px) 0 -0.4px,
+    linear-gradient(90deg, #041c32 0.8px, #ecb365 0.8px) -0.4px 0;
+  background-size: 20px 20px, 20px 20px, 10px 10px, 10px 10px;
+  display: flex;
+  align-items: center;
+  height: 65px;
+  width: 100%;
+  margin-top: 20px;
+  padding-left: 30px;
 }
 
 .card-title-container > h1 {
-  color: #041c32;
+  color: #8e0505;
+  display: inline-block;
   font-size: 2.5rem;
   font-weight: bold;
-  margin-top: 20px;
-  padding: 5px 30px;
+  margin: 0px;
+  padding: 2px 4px;
 }
 
 .card-body {
@@ -75,15 +103,6 @@ h4 {
 .card-footer {
   display: flex;
   justify-content: space-between;
-}
-
-.card-holder {
-}
-
-.card-expiration {
-}
-
-.card-cvv {
 }
 
 .expiration-container {
