@@ -1,102 +1,99 @@
 let cardNumberDOM = document.getElementById("cardNumber");
 let errorMessageDOM = document.getElementById("errorMessage");
 let cardTitleDOM = document.getElementById("cardTitle");
+let crediCardContainerDOM = document.getElementById("creditCardContainer");
 
 // Kullanıcı tarafından girilen kart numarası alınır.
 cardNumberDOM.addEventListener("change", (event) => {
   errorMessage("");
+  crediCardContainerDOM.style.height = "300px";
+  resultMessage("");
   let cardNumber = event.target.value;
-  let cardNumberArray = cardNumber.split("");
+  let cardNumberArray = cardNumber.replaceAll(" ", "").split("");
   cardNumberArray.length && numberDigitCheck(cardNumberArray);
 });
 
-// Kart numarasında en az iki farklı rakam kontrolü yapılır.
-const checkForTwoDifferentDigits = (cardNumberArray) => {
-  let count = 0;
-  for (let num1 of cardNumberArray) {
-    if (count < 1) {
-      count = 0;
-      for (let num2 of cardNumberArray) {
-        if (num1 !== num2) {
-          count++;
-          if (count >= 1) {
-            break;
-          }
-        }
-      }
+/*
+ * Kart kontrolü fonksiyonları
+ * Aşağıdan yukarı doğru fonksiyonlar çalışır
+ */
+
+// luhm kontrol
+const luhmCheck = (cardNumber) => {
+  let checkDigit = cardNumber.map((num, index) => {
+    if (index % 2 === 0) {
+      return num * 2 > 9 ? num * 2 - 9 : num * 2;
+    } else {
+      return num;
     }
-  }
+  });
 
-  count >= 1
-    ? (cardTitleDOM.innerHTML = "VALID")
-    : (cardTitleDOM.innerHTML = "INVALID");
+  checkDigit.reduce((a, b) => a + b) % 10 === 0
+    ? resultMessage("VALID")
+    : resultMessage("INVALID");
 };
 
-// Kart numarasının son iki hanesi çift olup olmadığı kontrol edilir.
-const lastTwoDigitCheck = (cardNumberArray) => {
-  errorMessage("");
-  resultMessage("");
-  const cardLength = cardNumberArray.length;
-  const lastTwoDigitSum =
-    cardNumberArray[cardLength - 2] * 10 + cardNumberArray[cardLength - 1] * 1;
-  isEven = lastTwoDigitSum % 2 === 0 ? true : false;
-  isEven
+// Kart numarasında en az iki rakam farklı mı?
+const checkForTwoDifferentDigits = (cardNumberArray) => {
+  cardNumberArray.some((num, index) => {
+    return num !== cardNumberArray[0];
+  })
+    ? luhmCheck(cardNumberArray)
+    : errorMessage("En az iki rakam farklı olmalıdır.");
+};
+
+// Kart numarasının son rakımı çift mi?
+const lastDigitCheck = (cardNumberArray) => {
+  cardNumberArray[cardNumberArray.length - 1] % 2 === 0
     ? checkForTwoDifferentDigits(cardNumberArray)
-    : errorMessage("Son iki hanenin çift olması gerekmektedir.");
+    : errorMessage("Son hane çift olması gerekmektedir.");
 };
 
-// Kart numarasının toplamı 16'dan büyük olup olmadığı kontrol edilir.
+// Kart numarasının toplamı 16'dan büyük mü?
 const sumCheck = (cardNumberArray) => {
-  errorMessage("");
-  resultMessage("");
-  let sum = cardNumberArray.reduce((a, b) => {
+  cardNumberArray.reduce((a, b) => {
     return a + b;
-  }, 0);
-  sum > 16
-    ? lastTwoDigitCheck(cardNumberArray)
+  }, 0) > 16
+    ? lastDigitCheck(cardNumberArray)
     : errorMessage("Lütfen toplamın 16'dan büyük olan bir sayı giriniz.");
 };
 
-// Kart numarısının uzunluğu kontrol edilir.
+// Kart numarısı 16 haneli mi?
 const lengthCheck = (cardNumberArray) => {
-  errorMessage("");
-  resultMessage("");
-  let isSixteenDigit =
-    cardNumberArray.length === 16
-      ? true
-      : errorMessage("Lütfen 16 haneli bir kredi kartı numarası giriniz.");
-
-  isSixteenDigit && sumCheck(cardNumberArray);
+  cardNumberArray.length === 16
+    ? sumCheck(cardNumberArray)
+    : errorMessage("Lütfen 16 haneli bir kredi kartı numarası giriniz.");
 };
 
 // Kart numarası integer'a dönüştürülür.
 const convertToNumber = (cardNumberArray) => {
-  errorMessage("");
-  resultMessage("");
-  let tempCardNumberArray = [];
+  let newCardNumberArray = [];
   for (let num of cardNumberArray) {
-    if (num !== "-") tempCardNumberArray.push(parseInt(num));
+    if (num !== "-") newCardNumberArray.push(parseInt(num));
   }
-  lengthCheck(tempCardNumberArray);
+  lengthCheck(newCardNumberArray);
 };
 
-// Kart numarasının tamamının rakamlardan veya orta çizgiden oluşup oluşmadığı kontrol edilir.
+// Kart numarasının tamamı rakamlardan veya orta çizgiden mi oluşuyor?
 const numberDigitCheck = (cardNumberArray) => {
-  errorMessage("");
-  resultMessage("");
-  let tempCardNumberArray = cardNumberArray.every((num) => {
+  cardNumberArray.every((num) => {
     return (num >= 0 && num <= 9) || num === "-";
-  });
-
-  tempCardNumberArray
+  })
     ? convertToNumber(cardNumberArray)
     : errorMessage("Lütfen sadece rakam ve orta çizgi giriniz.");
 };
 
+/*
+ * Çıktı fonksiyonları
+ */
+
+// Hata mesajının gösterilmesi için kullanılan fonksiyon.
 const errorMessage = (message) => {
   errorMessageDOM.innerText = message;
+  crediCardContainerDOM.style.height = "320px";
 };
 
+// Sonucun gösterilmesi için kullanılan fonksiyon.
 const resultMessage = (message) => {
   cardTitleDOM.innerText = message;
 };
