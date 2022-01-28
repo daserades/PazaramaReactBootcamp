@@ -6,6 +6,8 @@ Uygulamanın bağlantısı: https://final-project-fatihms-imvkimxy3-famusa.verce
 
 Admin paneli: https://final-project-fatihms-imvkimxy3-famusa.vercel.app/admin
 
+u:kodluyoruz, p:bootcamp109
+
 Uygulama hakkında not: kullanıcının eklediği resimleri base64 olarak API'a atıyorum, çok karakter oluştuğu için sorun oluşuyor. Profil fotoğrafı boyutu denecek kadar küçük görsel değilse kendi belirlediğim görsel yükleniyor.
 
 #### Genel Açıklama
